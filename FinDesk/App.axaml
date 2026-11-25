@@ -1,0 +1,144 @@
+﻿<Application xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="FinDesk.App">
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.ThemeDictionaries>
+                <ResourceDictionary x:Key="Light">
+                    <SolidColorBrush x:Key="CardBackground" Color="White"/>
+                    <SolidColorBrush x:Key="CardBorder" Color="#E0E0E0"/>
+                    <SolidColorBrush x:Key="WindowBackground" Color="#F0F0F0"/>
+
+                    <SolidColorBrush x:Key="TextPrimary" Color="Black"/>
+                    <SolidColorBrush x:Key="TextSecondary" Color="Gray"/>
+                    <SolidColorBrush x:Key="CategoryText" Color="#2196F3"/>
+
+                    <SolidColorBrush x:Key="TextControlBackground" Color="White"/>
+                    <SolidColorBrush x:Key="TextControlBackgroundPointerOver" Color="White"/>
+                    <SolidColorBrush x:Key="TextControlBackgroundFocused" Color="White"/>
+                    <SolidColorBrush x:Key="TextControlForeground" Color="Black"/>
+                    <SolidColorBrush x:Key="TextControlForegroundPointerOver" Color="Black"/>
+                    <SolidColorBrush x:Key="TextControlForegroundFocused" Color="Black"/>
+                    <SolidColorBrush x:Key="TextControlCaretForeground" Color="Black"/>
+                    <SolidColorBrush x:Key="TextControlBorderBrush" Color="#CCCCCC"/>
+                    <SolidColorBrush x:Key="TextControlBorderBrushPointerOver" Color="#999999"/>
+                    <SolidColorBrush x:Key="TextControlBorderBrushFocused" Color="#2196F3"/>
+                </ResourceDictionary>
+
+                <ResourceDictionary x:Key="Dark">
+                    <SolidColorBrush x:Key="CardBackground" Color="#2D2D2D"/>
+                    <SolidColorBrush x:Key="CardBorder" Color="#404040"/>
+                    <SolidColorBrush x:Key="WindowBackground" Color="#1E1E1E"/>
+
+                    <SolidColorBrush x:Key="TextPrimary" Color="White"/>
+                    <SolidColorBrush x:Key="TextSecondary" Color="#B0B0B0"/>
+                    <SolidColorBrush x:Key="CategoryText" Color="#64B5F6"/>
+
+                    <SolidColorBrush x:Key="TextControlBackground" Color="#3D3D3D"/>
+                    <SolidColorBrush x:Key="TextControlBackgroundPointerOver" Color="#3D3D3D"/>
+                    <SolidColorBrush x:Key="TextControlBackgroundFocused" Color="#3D3D3D"/>
+                    <SolidColorBrush x:Key="TextControlForeground" Color="White"/>
+                    <SolidColorBrush x:Key="TextControlForegroundPointerOver" Color="White"/>
+                    <SolidColorBrush x:Key="TextControlForegroundFocused" Color="White"/>
+                    <SolidColorBrush x:Key="TextControlCaretForeground" Color="White"/>
+                    <SolidColorBrush x:Key="TextControlBorderBrush" Color="#555555"/>
+                    <SolidColorBrush x:Key="TextControlBorderBrushPointerOver" Color="#777777"/>
+                    <SolidColorBrush x:Key="TextControlBorderBrushFocused" Color="#64B5F6"/>
+                </ResourceDictionary>
+            </ResourceDictionary.ThemeDictionaries>
+        </ResourceDictionary>
+    </Application.Resources>
+
+    <Application.Styles>
+        <FluentTheme />
+
+        <Style Selector="Button.deleteBtn">
+            <Setter Property="Background" Value="#F44336"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderBrush" Value="#F44336"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="CornerRadius" Value="17"/>
+            <Setter Property="Width" Value="32"/>
+            <Setter Property="Height" Value="32"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Padding" Value="0"/>
+        </Style>
+
+        <Style Selector="Button.deleteBtn:pointerover">
+            <Setter Property="Background" Value="#D32F2F"/>
+            <Setter Property="Foreground" Value="White"/>
+        </Style>
+
+        <Style Selector="Button.deleteBtn:pressed">
+            <Setter Property="Background" Value="#B71C1C"/>
+            <Setter Property="Foreground" Value="White"/>
+        </Style>
+
+        <Style Selector="Button.addBtn">
+            <Setter Property="Background" Value="#4CAF50"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderBrush" Value="#4CAF50"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="CornerRadius" Value="6"/>
+            <Setter Property="Padding" Value="20,12"/>
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="HorizontalAlignment" Value="Stretch"/>
+        </Style>
+
+        <Style Selector="Button.addBtn:pointerover">
+            <Setter Property="Background" Value="#45A049"/>
+            <Setter Property="Foreground" Value="White"/>
+        </Style>
+
+        <Style Selector="Button.refreshBtn">
+            <Setter Property="Background" Value="#2196F3"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderBrush" Value="#2196F3"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="CornerRadius" Value="6"/>
+            <Setter Property="Padding" Value="20,10"/>
+            <Setter Property="Cursor" Value="Hand"/>
+        </Style>
+
+        <Style Selector="Button.refreshBtn:pointerover">
+            <Setter Property="Background" Value="#1976D2"/>
+            <Setter Property="Foreground" Value="White"/>
+        </Style>
+
+        <Style Selector="ComboBox">
+            <Setter Property="Background" Value="{DynamicResource TextControlBackground}"/>
+            <Setter Property="Foreground" Value="{DynamicResource TextControlForeground}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource TextControlBorderBrush}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="10,8"/>
+            <Setter Property="CornerRadius" Value="4"/>
+            <Setter Property="FontSize" Value="14"/>
+        </Style>
+
+        <Style Selector="ComboBoxItem">
+            <Setter Property="Background" Value="{DynamicResource TextControlBackground}"/>
+            <Setter Property="Foreground" Value="{DynamicResource TextControlForeground}"/>
+            <Setter Property="Padding" Value="10,8"/>
+        </Style>
+
+        <Style Selector="ComboBoxItem:pointerover">
+            <Setter Property="Background" Value="#E3F2FD"/>
+            <Setter Property="Foreground" Value="Black"/>
+        </Style>
+
+        <Style Selector="ComboBoxItem:selected">
+            <Setter Property="Background" Value="#2196F3"/>
+            <Setter Property="Foreground" Value="White"/>
+        </Style>
+
+        <Style Selector="RadioButton">
+            <Setter Property="Foreground" Value="{DynamicResource TextPrimary}"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="FontSize" Value="14"/>
+        </Style>
+    </Application.Styles>
+</Application>

@@ -1,0 +1,271 @@
+﻿<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vm="using:FinDesk.ViewModels"
+        xmlns:models="using:FinDesk.Models"
+        xmlns:views="using:FinDesk.Views"
+        mc:Ignorable="d" d:DesignWidth="950" d:DesignHeight="750"
+        x:Class="FinDesk.MainWindow"
+        x:DataType="vm:MainViewModel"
+        Title="FinDesk - Учет финансов"
+        Width="950" Height="750"
+        MinWidth="950" MinHeight="700"
+        WindowStartupLocation="CenterScreen"
+        Background="{DynamicResource WindowBackground}">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Border Grid.Row="0" Background="#2196F3" Padding="20,15">
+            <Grid ColumnDefinitions="*,Auto">
+                <TextBlock Text="FinDesk - Учет личных финансов" 
+                           FontSize="22" FontWeight="Bold" Foreground="White"
+                           VerticalAlignment="Center"/>
+                
+                <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="10">
+                    <Button Content="Транзакции" 
+                            Click="ShowTransactions_Click"
+                            Background="White"
+                            Foreground="#2196F3"
+                            BorderThickness="0"
+                            CornerRadius="6"
+                            Padding="15,8"
+                            FontSize="14"
+                            FontWeight="Bold"
+                            Cursor="Hand"
+                            x:Name="BtnTransactions"/>
+                    <Button Content="Статистика" 
+                            Click="ShowStatistics_Click"
+                            Background="Transparent"
+                            Foreground="White"
+                            BorderBrush="White"
+                            BorderThickness="1"
+                            CornerRadius="6"
+                            Padding="15,8"
+                            FontSize="14"
+                            Cursor="Hand"
+                            x:Name="BtnStatistics"/>
+                    <Button Content="Категории" 
+                            Click="ShowCategories_Click"
+                            Background="Transparent"
+                            Foreground="White"
+                            BorderBrush="White"
+                            BorderThickness="1"
+                            CornerRadius="6"
+                            Padding="15,8"
+                            FontSize="14"
+                            Cursor="Hand"/>
+                    <Button Content="🌙" 
+                            Click="ToggleTheme_Click"
+                            Background="Transparent"
+                            Foreground="White"
+                            BorderBrush="White"
+                            BorderThickness="1"
+                            CornerRadius="6"
+                            Padding="15,8"
+                            FontSize="14"
+                            Cursor="Hand"
+                            x:Name="BtnTheme"
+                            ToolTip.Tip="Переключить тему"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <Grid Grid.Row="1" Margin="20">
+            <Grid x:Name="TransactionsPanel">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <Border Grid.Row="0" Background="#2196F3" CornerRadius="10" Padding="25" Margin="0,0,0,20">
+                    <StackPanel>
+                        <TextBlock Text="Текущий баланс" FontSize="18" Foreground="White" Opacity="0.9"/>
+                        <TextBlock Text="{Binding Balance, StringFormat={}{0:N2} ₽}" 
+                                   FontSize="42" FontWeight="Bold" Foreground="White"/>
+                    </StackPanel>
+                </Border>
+
+                <Grid Grid.Row="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="380"/>
+                        <ColumnDefinition Width="20"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Border Grid.Column="0" Background="{DynamicResource CardBackground}" CornerRadius="10" Padding="25">
+                        <StackPanel Spacing="18">
+                            <TextBlock Text="Новая операция" FontSize="24" FontWeight="Bold" Foreground="{DynamicResource TextPrimary}" Margin="0,0,0,10"/>
+
+                            <StackPanel Spacing="8">
+                                <TextBlock Text="Тип операции:" Foreground="{DynamicResource TextPrimary}" FontWeight="SemiBold" FontSize="14"/>
+                                <StackPanel Orientation="Horizontal" Spacing="25">
+                                    <RadioButton Content="Расход" GroupName="TypeGroup" 
+                                                 IsChecked="{Binding IsExpenseSelected}" Foreground="{DynamicResource TextPrimary}" FontSize="14"/>
+                                    <RadioButton Content="Доход" GroupName="TypeGroup" 
+                                                 IsChecked="{Binding IsIncomeSelected}" Foreground="{DynamicResource TextPrimary}" FontSize="14"/>
+                                </StackPanel>
+                            </StackPanel>
+
+                            <StackPanel Spacing="8">
+                                <TextBlock Text="Сумма (руб.):" Foreground="{DynamicResource TextPrimary}" FontWeight="SemiBold" FontSize="14"/>
+                                <TextBox Text="{Binding NewAmount}" Watermark="Введите сумму"/>
+                            </StackPanel>
+
+                            <StackPanel Spacing="8">
+                                <TextBlock Text="Категория:" Foreground="{DynamicResource TextPrimary}" FontWeight="SemiBold" FontSize="14"/>
+                                <ComboBox ItemsSource="{Binding Categories}" 
+                                          SelectedItem="{Binding SelectedCategory}">
+                                    <ComboBox.ItemTemplate>
+                                        <DataTemplate x:DataType="models:Category">
+                                            <TextBlock Text="{Binding Name}" Foreground="{DynamicResource TextPrimary}"/>
+                                        </DataTemplate>
+                                    </ComboBox.ItemTemplate>
+                                </ComboBox>
+                            </StackPanel>
+
+                            <StackPanel Spacing="8">
+                                <TextBlock Text="Описание:" Foreground="{DynamicResource TextPrimary}" FontWeight="SemiBold" FontSize="14"/>
+                                <TextBox Text="{Binding NewDescription}" Watermark="Комментарий (необязательно)"/>
+                            </StackPanel>
+
+                            <Button Content="Добавить операцию" 
+                                    Command="{Binding AddTransactionCommand}"
+                                    Classes="addBtn"
+                                    Margin="0,15,0,0"/>
+
+                            <TextBlock Text="{Binding ErrorMessage}" Foreground="Red" FontSize="13" 
+                                       IsVisible="{Binding HasError}" TextWrapping="Wrap" Margin="0,10,0,0"/>
+                        </StackPanel>
+                    </Border>
+
+                    <Border Grid.Column="2" Background="{DynamicResource CardBackground}" CornerRadius="10" Padding="25">
+                        <DockPanel>
+                            <Border DockPanel.Dock="Top" Background="{DynamicResource CardBackground}" CornerRadius="8" Padding="15" Margin="0,0,0,15" BorderBrush="{DynamicResource CardBorder}" BorderThickness="1">
+                                <StackPanel Spacing="12">
+                                    <TextBlock Text="Фильтр и поиск" FontSize="16" FontWeight="Bold" Foreground="{DynamicResource TextPrimary}"/>
+                                    
+                                    <StackPanel Orientation="Horizontal" Spacing="15">
+                                        <StackPanel Spacing="5">
+                                            <TextBlock Text="С даты:" FontSize="12" Foreground="{DynamicResource TextSecondary}"/>
+                                            <DatePicker SelectedDate="{Binding FilterFromDate}" Width="160"/>
+                                        </StackPanel>
+                                        
+                                        <StackPanel Spacing="5">
+                                            <TextBlock Text="По дату:" FontSize="12" Foreground="{DynamicResource TextSecondary}"/>
+                                            <DatePicker SelectedDate="{Binding FilterToDate}" Width="160"/>
+                                        </StackPanel>
+                                        
+                                        <StackPanel Spacing="5">
+                                            <TextBlock Text="Поиск по описанию:" FontSize="12" Foreground="{DynamicResource TextSecondary}"/>
+                                            <TextBox Text="{Binding SearchQuery}" Watermark="Введите текст..." Width="220"/>
+                                        </StackPanel>
+                                    </StackPanel>
+                                    
+                                    <StackPanel Orientation="Horizontal" Spacing="10">
+                                        <Button Content="Применить" 
+                                                Command="{Binding ApplyFilterCommand}"
+                                                Background="#2196F3"
+                                                Foreground="White"
+                                                BorderThickness="0"
+                                                CornerRadius="6"
+                                                Padding="20,8"
+                                                FontSize="13"
+                                                Cursor="Hand">
+                                            <Button.Styles>
+                                                <Style Selector="Button:pointerover">
+                                                    <Setter Property="Background" Value="#1976D2"/>
+                                                    <Setter Property="Foreground" Value="White"/>
+                                                </Style>
+                                            </Button.Styles>
+                                        </Button>
+                                        
+                                        <Button Content="Сбросить" 
+                                                Command="{Binding ClearFilterCommand}"
+                                                Background="#757575"
+                                                Foreground="White"
+                                                BorderThickness="0"
+                                                CornerRadius="6"
+                                                Padding="20,8"
+                                                FontSize="13"
+                                                Cursor="Hand">
+                                            <Button.Styles>
+                                                <Style Selector="Button:pointerover">
+                                                    <Setter Property="Background" Value="#616161"/>
+                                                    <Setter Property="Foreground" Value="White"/>
+                                                </Style>
+                                            </Button.Styles>
+                                        </Button>
+                                        
+                                        <TextBlock Text="Фильтр активен" FontSize="13" Foreground="#4CAF50" FontWeight="SemiBold"
+                                                   IsVisible="{Binding IsFilterActive}" VerticalAlignment="Center" Margin="15,0,0,0"/>
+                                    </StackPanel>
+                                </StackPanel>
+                            </Border>
+
+                            <DockPanel DockPanel.Dock="Top" Margin="0,0,0,15">
+                                <TextBlock Text="История операций" FontSize="24" FontWeight="Bold" Foreground="{DynamicResource TextPrimary}"/>
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Spacing="10">
+                                    <Button Content="Экспорт CSV" 
+                                            Command="{Binding ExportCommand}"
+                                            Background="#FF9800"
+                                            Foreground="White"
+                                            BorderThickness="0"
+                                            CornerRadius="6"
+                                            Padding="15,10"
+                                            FontSize="13"
+                                            Cursor="Hand">
+                                        <Button.Styles>
+                                            <Style Selector="Button:pointerover">
+                                                <Setter Property="Background" Value="#F57C00"/>
+                                                <Setter Property="Foreground" Value="White"/>
+                                            </Style>
+                                        </Button.Styles>
+                                    </Button>
+                                </StackPanel>
+                            </DockPanel>
+
+                            <ScrollViewer>
+                                <ListBox ItemsSource="{Binding Transactions}">
+                                    <ListBox.ItemTemplate>
+                                        <DataTemplate x:DataType="models:Transaction">
+                                            <Border Background="{DynamicResource CardBackground}" CornerRadius="8" Padding="18" Margin="0,6" BorderBrush="{DynamicResource CardBorder}" BorderThickness="1">
+                                                <Grid ColumnDefinitions="*, Auto">
+                                                    <StackPanel Grid.Column="0" Spacing="5" Margin="0,0,15,0">
+                                                        <TextBlock Text="{Binding Description}" FontWeight="Bold" FontSize="16" Foreground="{DynamicResource TextPrimary}"/>
+                                                        <TextBlock Text="{Binding Date, StringFormat={}{0:dd.MM.yyyy HH:mm}}" 
+                                                                   FontSize="12" Foreground="{DynamicResource TextSecondary}"/>
+                                                        <TextBlock Text="{Binding Category.Name}" FontSize="13" Foreground="{DynamicResource CategoryText}"/>
+                                                    </StackPanel>
+
+                                                    <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="15" VerticalAlignment="Center">
+                                                        <TextBlock Text="{Binding Amount, StringFormat={}{0:N2} руб.}"
+                                                                   FontSize="18" FontWeight="Bold" Foreground="{DynamicResource TextPrimary}"
+                                                                   VerticalAlignment="Center"/>
+
+                                                        <Button Content="✕"
+                                                                Classes="deleteBtn"
+                                                                HorizontalContentAlignment="Center"
+                                                                VerticalContentAlignment="Center"
+                                                                Command="{Binding $parent[ListBox].DataContext.DeleteTransactionCommand}"
+                                                                CommandParameter="{Binding Id}"/>
+                                                    </StackPanel>
+                                                </Grid>
+                                            </Border>
+                                        </DataTemplate>
+                                    </ListBox.ItemTemplate>
+                                </ListBox>
+                            </ScrollViewer>
+                        </DockPanel>
+                    </Border>
+                </Grid>
+            </Grid>
+
+            <views:StatisticsView x:Name="StatisticsPanel" IsVisible="False"/>
+        </Grid>
+    </Grid>
+</Window>

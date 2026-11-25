@@ -1,0 +1,139 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vm="using:FinDesk.ViewModels"
+        xmlns:models="using:FinDesk.Models"
+        xmlns:local="using:FinDesk.Converters"
+        mc:Ignorable="d" d:DesignWidth="500" d:DesignHeight="500"
+        x:Class="FinDesk.Views.CategoryManagerView"
+        x:DataType="vm:CategoryManagerViewModel"
+        Title="Управление категориями"
+        Width="500" Height="500"
+        WindowStartupLocation="CenterScreen"
+        Background="{DynamicResource WindowBackground}">
+
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Row="0" Text="Управление категориями" 
+                   FontSize="22" FontWeight="Bold" 
+                   Foreground="{DynamicResource TextPrimary}" Margin="0,0,0,15"/>
+
+        <Border Grid.Row="0" Background="{DynamicResource CardBackground}" 
+                CornerRadius="8" Padding="15" Margin="0,40,0,0"
+                BorderBrush="{DynamicResource CardBorder}" BorderThickness="1">
+            <StackPanel Spacing="10">
+                <TextBlock Text="Добавить новую категорию" 
+                           FontSize="16" FontWeight="Bold" 
+                           Foreground="{DynamicResource TextPrimary}"/>
+                
+                <Grid ColumnDefinitions="*,Auto,Auto">
+                    <TextBox Grid.Column="0" Text="{Binding NewCategoryName}" 
+                             Watermark="Название категории" Margin="0,0,10,0"/>
+
+                    <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="15" VerticalAlignment="Center" Margin="0,0,10,0">
+                        <RadioButton Content="Расход" GroupName="CategoryType" 
+                                     IsChecked="{Binding IsExpenseType}" 
+                                     Foreground="{DynamicResource TextPrimary}"/>
+                        <RadioButton Content="Доход" GroupName="CategoryType" 
+                                     IsChecked="{Binding IsIncomeType}" 
+                                     Foreground="{DynamicResource TextPrimary}"/>
+                    </StackPanel>
+                    
+                    <Button Grid.Column="2" Content="Добавить" 
+                            Command="{Binding AddCategoryCommand}"
+                            Background="#4CAF50"
+                            Foreground="White"
+                            BorderThickness="0"
+                            CornerRadius="6"
+                            Padding="15,8"
+                            Cursor="Hand">
+                        <Button.Styles>
+                            <Style Selector="Button:pointerover">
+                                <Setter Property="Background" Value="#45A049"/>
+                            </Style>
+                        </Button.Styles>
+                    </Button>
+                </Grid>
+            </StackPanel>
+        </Border>
+
+        <Border Grid.Row="1" Background="{DynamicResource CardBackground}" 
+                CornerRadius="8" Padding="15" Margin="0,15,0,0"
+                BorderBrush="{DynamicResource CardBorder}" BorderThickness="1">
+            <DockPanel>
+                <TextBlock DockPanel.Dock="Top" Text="Список категорий" 
+                           FontSize="16" FontWeight="Bold" 
+                           Foreground="{DynamicResource TextPrimary}" Margin="0,0,0,10"/>
+                
+                <ScrollViewer>
+                    <ListBox ItemsSource="{Binding Categories}" Background="Transparent">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate x:DataType="models:CategoryItem">
+                                <Border Background="{DynamicResource CardBackground}" 
+                                        CornerRadius="6" Padding="12" Margin="0,4"
+                                        BorderBrush="{DynamicResource CardBorder}" BorderThickness="1">
+                                    <Grid ColumnDefinitions="*,Auto,Auto">
+                                        <StackPanel Grid.Column="0">
+                                            <TextBlock Text="{Binding Name}" 
+                                                       FontSize="14" FontWeight="SemiBold"
+                                                       Foreground="{DynamicResource TextPrimary}"/>
+                                            <TextBlock Text="{Binding TypeRu}" 
+                                                       FontSize="12" 
+                                                       Foreground="{DynamicResource TextSecondary}"/>
+                                        </StackPanel>
+                                        
+                                        <TextBlock Grid.Column="1" 
+                                                   Text="Используется" 
+                                                   FontSize="11" 
+                                                   Foreground="#FF9800"
+                                                   IsVisible="{Binding IsUsed}"
+                                                   VerticalAlignment="Center"
+                                                   Margin="0,0,15,0"/>
+                                        
+                                        <Button Grid.Column="2" Content="✕"
+                                                Classes="deleteBtn"
+                                                HorizontalContentAlignment="Center"
+                                                VerticalContentAlignment="Center"
+                                                Command="{Binding $parent[ListBox].DataContext.DeleteCategoryCommand}"
+                                                CommandParameter="{Binding Id}"/>
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </ScrollViewer>
+            </DockPanel>
+        </Border>
+
+        <StackPanel Grid.Row="2" Spacing="10" Margin="0,15,0,0">
+            <TextBlock Text="{Binding ErrorMessage}" Foreground="Red" FontSize="13" 
+                       IsVisible="{Binding HasError}" TextWrapping="Wrap"/>
+            <TextBlock Text="{Binding SuccessMessage}" Foreground="#4CAF50" FontSize="13" 
+                       IsVisible="{Binding SuccessMessage, Converter={x:Static local:StringConverters.IsNotNullOrEmpty}}"
+                       TextWrapping="Wrap"/>
+            
+            <Button Content="Закрыть" 
+                    Command="{Binding CloseCommand}"
+                    HorizontalAlignment="Stretch"
+                    Background="#2196F3"
+                    Foreground="White"
+                    BorderThickness="0"
+                    CornerRadius="6"
+                    Padding="15,10"
+                    FontSize="14"
+                    Cursor="Hand">
+                <Button.Styles>
+                    <Style Selector="Button:pointerover">
+                        <Setter Property="Background" Value="#1976D2"/>
+                    </Style>
+                </Button.Styles>
+            </Button>
+        </StackPanel>
+    </Grid>
+</Window>

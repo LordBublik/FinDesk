@@ -1,0 +1,38 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="380" d:DesignHeight="160"
+        x:Class="FinDesk.Views.ConfirmationView"
+        Title="Подтверждение"
+        Width="380" Height="160"
+        WindowStartupLocation="CenterOwner"
+        CanResize="False"
+        SystemDecorations="BorderOnly"
+        Background="{DynamicResource WindowBackground}">
+    
+    <StackPanel Margin="20" Spacing="20">
+        <TextBlock x:Name="MessageText" Text="Вы уверены?" 
+                   TextWrapping="Wrap" FontSize="14" Foreground="{DynamicResource TextPrimary}"/>
+        
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Spacing="10">
+            <Button Content="Да, удалить" Width="100" Click="Yes_Click" 
+                    Background="#F44336" Foreground="White" BorderThickness="0" CornerRadius="6" Cursor="Hand" FontSize="13">
+                <Button.Styles>
+                    <Style Selector="Button:pointerover">
+                        <Setter Property="Background" Value="#D32F2F"/>
+                    </Style>
+                </Button.Styles>
+            </Button>
+            <Button Content="Отмена" Width="100" Click="No_Click" 
+                    Background="{DynamicResource CardBackground}" Foreground="{DynamicResource TextPrimary}" 
+                    BorderBrush="{DynamicResource CardBorder}" BorderThickness="1" CornerRadius="6" Cursor="Hand" FontSize="13">
+                <Button.Styles>
+                    <Style Selector="Button:pointerover">
+                        <Setter Property="Background" Value="#E0E0E0"/>
+                    </Style>
+                </Button.Styles>
+            </Button>
+        </StackPanel>
+    </StackPanel>
+</Window>
